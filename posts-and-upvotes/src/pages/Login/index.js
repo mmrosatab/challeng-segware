@@ -29,7 +29,7 @@ export default function Login() {
     return "usernotexists";
   }
 
-  function handleSubmit() {
+  function handleClickSignIn() {
     const userData = {
       username: username,
       password: password,
@@ -52,7 +52,7 @@ export default function Login() {
       .catch((error) => console.error(`Error: ${console.error()}`));
   }
 
-  function handleForgotPassword() {}
+  function handleClickForgotPassword() {}
 
   return (
     <section>
@@ -64,8 +64,10 @@ export default function Login() {
         value={password}
         onChange={(event) => handleChangePassword(event)}
       />
-      <button onClick={() => handleSubmit()}>Sign in</button>
-      <button onClick={() => handleForgotPassword()}>Forgot Password</button>
+      <button onClick={() => handleClickSignIn()}>Sign in</button>
+      <button onClick={() => handleClickForgotPassword()}>
+        Forgot Password
+      </button>
     </section>
   );
 }
