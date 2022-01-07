@@ -1,73 +1,62 @@
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const URL_SIGN_IN = "https://segware-book-api.segware.io/api/sign-in";
-const URL_FORGOT_PASSWORD =
-  "https://segware-book-api.segware.io/api/forgot-passward/{username}";
 
 export default function Login() {
-  useEffect(() => {}, []);
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
 
-  function handleChangeUsername(event) {
-    const value = event.target.value;
-    if (value.length > 0) setUsername(value);
-  }
-
-  function handleChangePassword(event) {
-    const value = event.target.value;
-    if (value.length > 0) setPassword(value);
-  }
-
-  function userDataIsEmpty() {
-    return username.length === 0 && password.length === 0;
-  }
-
-  function userNotExists() {
-    return "usernotexists";
+  function loginDataIsEmpty() {
+    return username.length === 0 || password.length === 0;
   }
 
   function handleClickSignIn() {
-    const userData = {
+    const loginData = {
       username: username,
       password: password,
     };
 
-    if (userDataIsEmpty()) {
+    if (loginDataIsEmpty()) {
       return;
     }
 
-    fetch(URL_SIGN_IN, {
+    sendRequest(loginData);
+  }
+
+  function sendRequest(loginData) {
+    const requestOptions = {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(userData),
-    })
+      body: JSON.stringify(loginData),
+    };
+
+    fetch(URL_SIGN_IN, requestOptions)
       .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((data) => setToken(data))
       .catch((error) => console.error(`Error: ${console.error()}`));
   }
 
   function handleClickForgotPassword() {}
+  function handleSuccessLogin() {}
+  function handleFailLogin() {}
 
   return (
-    <section>
+    <main>
       <input
         value={username}
-        onChange={(event) => handleChangeUsername(event)}
+        onChange={(event) => setUsername(event.target.value)}
       />
       <input
         value={password}
-        onChange={(event) => handleChangePassword(event)}
+        onChange={(event) => setPassword(event.target.value)}
       />
       <button onClick={() => handleClickSignIn()}>Sign in</button>
-      <button onClick={() => handleClickForgotPassword()}>
-        Forgot Password
-      </button>
-    </section>
+      <Link to="/forgot-password">Forgot Password</Link>
+    </main>
   );
 }

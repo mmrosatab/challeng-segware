@@ -5,16 +5,10 @@ const URL_FEEDS = "https://segware-book-api.segware.io/api/feeds";
 const URL_FEED = "https://segware-book-api.segware.io/api/feed";
 const URL_REACTION = "https://segware-book-api.segware.io/api/reaction";
 
-function App() {
+export default function App() {
   return (
-    <div>
-      <header></header>
-      <main>
-        <Login />
-      </main>
-      <footer></footer>
-    </div>
+    <main>
+      <Login />
+    </main>
   );
 }
-
-export default App;
