@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "react-router-dom": "6"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }

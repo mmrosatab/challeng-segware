@@ -1,62 +1,103 @@
-import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-
-const URL_SIGN_IN = "https://segware-book-api.segware.io/api/sign-in";
+import { Link as LinkRouter } from "react-router-dom";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
-
-  function loginDataIsEmpty() {
-    return username.length === 0 || password.length === 0;
+  function isSomeEmpty(data) {
+    return data.username.length === 0 || data.password.length === 0;
   }
 
-  function handleClickSignIn() {
-    const loginData = {
-      username: username,
-      password: password,
+  // function handleInputChange() {}
+  // function handleSuccessLogin() {}
+  // function handleFailLogin() {}
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const data = {
+      username: formData.get("username"),
+      password: formData.get("password"),
     };
 
-    if (loginDataIsEmpty()) {
-      return;
-    }
-
-    sendRequest(loginData);
+    if (isSomeEmpty(data)) return;
   }
 
-  function sendRequest(loginData) {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginData),
-    };
-
-    fetch(URL_SIGN_IN, requestOptions)
-      .then((response) => response.json())
-      .then((data) => setToken(data))
-      .catch((error) => console.error(`Error: ${console.error()}`));
-  }
-
-  function handleClickForgotPassword() {}
-  function handleSuccessLogin() {}
-  function handleFailLogin() {}
+  const theme = createTheme();
 
   return (
-    <main>
-      <input
-        value={username}
-        onChange={(event) => setUsername(event.target.value)}
-      />
-      <input
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
-      <button onClick={() => handleClickSignIn()}>Sign in</button>
-      <Link to="/forgot-password">Forgot Password</Link>
-    </main>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Typography variant="body2">
+                  <LinkRouter to="/forgot-password">
+                    Forgot password?
+                  </LinkRouter>
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="body2">
+                  <LinkRouter to="/forgot-password">
+                    {"Don't have an account? Sign Up"}
+                  </LinkRouter>
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 }
