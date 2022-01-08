@@ -3,13 +3,14 @@ import {
   getTokenLocalStorage,
   removeTokenLocalStorage,
   setTokenLocalStorage,
-  LoginRequest,
-} from "../AuthContext/util";
+} from "../LocalStoreProvider";
+
+import { signInRequest } from "../../RequestProvider";
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(getTokenLocalStorage());
 
   useEffect(() => {
     const token = getTokenLocalStorage();
@@ -21,8 +22,7 @@ export function AuthProvider({ children }) {
 
   // after change for sign in vs sign out
   async function authenticate(username, password) {
-    const response = await LoginRequest(username, password);
-    const token = response.data;
+    const token = await signInRequest(username, password);
     setTokenLocalStorage(token);
   }
 
@@ -30,9 +30,7 @@ export function AuthProvider({ children }) {
     removeTokenLocalStorage();
   }
 
-  return (
-    <AuthContext.Provider value={{ ...token, authenticate, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  let value = { token, authenticate, logout };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

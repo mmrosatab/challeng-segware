@@ -7,28 +7,32 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useAuth } from "../../context/AuthContext";
 
-export default function Login() {
-  function isSomeEmpty(data) {
-    return data.username.length === 0 || data.password.length === 0;
+const theme = createTheme();
+
+export default function SignIn() {
+  let auth = useAuth();
+
+  function emptyOrOnlySpaces(username, password) {
+    return username.trim().length === 0 || password.trim().length === 0;
   }
 
   // function handleInputChange() {}
-  // function handleSuccessLogin() {}
-  // function handleFailLogin() {}
+  // function handleSuccessSignIn() {}
+  // function handleFailSignIn() {}
 
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const data = {
-      username: formData.get("username"),
-      password: formData.get("password"),
-    };
+    const username = formData.get("username");
+    const password = formData.get("password");
 
-    if (isSomeEmpty(data)) return;
+    if (emptyOrOnlySpaces(username, password)) return;
+
+    // localStorage.removeItem("token");
+    // auth.authenticate(username, password);
   }
-
-  const theme = createTheme();
 
   return (
     <ThemeProvider theme={theme}>
@@ -89,8 +93,8 @@ export default function Login() {
               </Grid>
               <Grid item>
                 <Typography variant="body2">
-                  <LinkRouter to="/forgot-password">
-                    {"Don't have an account? Sign Up"}
+                  <LinkRouter to="/sign-up">
+                    {"Don't have an account? Sign up"}
                   </LinkRouter>
                 </Typography>
               </Grid>
