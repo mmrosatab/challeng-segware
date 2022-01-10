@@ -21,8 +21,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function login(username, password) {
-    // const token = await signInRequest(username, password);
-    const token = "Ksdfsdfsrsrf";
+    const token = await signInRequest(username, password);
+    // const token = "Ksdfsdfsrsrf";
     setToken(token);
     setTokenLocalStorage(token);
   }

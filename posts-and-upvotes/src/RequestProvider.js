@@ -22,3 +22,14 @@ export async function signUpRequest(username, password) {
     return null;
   }
 }
+
+export async function forgotPasswordRequest(username) {
+  const URL = `https://segware-book-api.segware.io/api/forgot-password/${username}`;
+
+  try {
+    const request = await axios.get(URL, { username });
+    return request.data;
+  } catch (error) {
+    return null;
+  }
+}
