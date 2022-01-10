@@ -20,17 +20,21 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // after change for sign in vs sign out
-  async function authenticate(username, password) {
-    const token = await signInRequest(username, password);
+  async function login(username, password) {
+    // const token = await signInRequest(username, password);
+    const token = "Ksdfsdfsrsrf";
+    setToken(token);
     setTokenLocalStorage(token);
   }
 
   function logout() {
+    setToken(null);
     removeTokenLocalStorage();
   }
 
-  let value = { token, authenticate, logout };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ token, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -5,10 +6,23 @@ import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import { useAuth } from "../../context/AuthContext";
 
 const theme = createTheme();
 
 export default function Home() {
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  function handleClickLogout() {
+    try {
+      auth.logout();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -57,7 +71,12 @@ export default function Home() {
               alignItems: "center",
             }}
           >
-            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleClickLogout}
+            >
               Logout
             </Button>
           </Box>

@@ -1,4 +1,4 @@
-import { Link as LinkRouter } from "react-router-dom";
+import { Link as LinkRouter, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -12,7 +12,8 @@ import { useAuth } from "../../context/AuthContext";
 const theme = createTheme();
 
 export default function SignIn() {
-  let auth = useAuth();
+  const auth = useAuth();
+  const navigate = useNavigate();
 
   function emptyOrOnlySpaces(username, password) {
     return username.trim().length === 0 || password.trim().length === 0;
@@ -22,7 +23,7 @@ export default function SignIn() {
   // function handleSuccessSignIn() {}
   // function handleFailSignIn() {}
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const username = formData.get("username");
@@ -31,7 +32,13 @@ export default function SignIn() {
     if (emptyOrOnlySpaces(username, password)) return;
 
     // localStorage.removeItem("token");
-    // auth.authenticate(username, password);
+
+    try {
+      await auth.login(username, password);
+      navigate("/home");
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

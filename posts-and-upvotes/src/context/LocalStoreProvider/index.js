@@ -9,3 +9,5 @@ export function removeTokenLocalStorage() {
 export function getTokenLocalStorage() {
   return localStorage.getItem("token");
 }
+
+export const userIsAuthenticated = getTokenLocalStorage() !== null;
