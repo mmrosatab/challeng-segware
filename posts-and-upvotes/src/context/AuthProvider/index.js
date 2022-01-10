@@ -13,18 +13,23 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(getTokenLocalStorage());
 
   useEffect(() => {
-    const token = getTokenLocalStorage();
+    const actualToken = getTokenLocalStorage();
 
-    if (token) {
-      setToken(token);
+    if (actualToken) {
+      setToken(actualToken);
     }
   }, []);
 
   async function login(username, password) {
-    const token = await signInRequest(username, password);
-    // const token = "Ksdfsdfsrsrf";
-    setToken(token);
-    setTokenLocalStorage(token);
+    try {
+      const actualToken = await signInRequest(username, password);
+      if (actualToken) {
+        setToken(actualToken);
+        setTokenLocalStorage(actualToken);
+      }
+    } catch (error) {
+      return error;
+    }
   }
 
   function logout() {

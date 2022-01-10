@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Link as LinkRouter, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -7,38 +8,45 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import { useAuth } from "../../context/AuthContext";
+import { emptyOrOnlySpaces } from "../utils";
 
 const theme = createTheme();
 
 export default function SignIn() {
   const auth = useAuth();
   const navigate = useNavigate();
-
-  function emptyOrOnlySpaces(username, password) {
-    return username.trim().length === 0 || password.trim().length === 0;
-  }
-
-  // function handleInputChange() {}
-  // function handleSuccessSignIn() {}
-  // function handleFailSignIn() {}
+  const [message, setMessage] = useState(null);
+  const [open, setOpen] = useState(true);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const username = formData.get("username");
-    const password = formData.get("password");
 
     if (emptyOrOnlySpaces(username, password)) return;
 
-    // localStorage.removeItem("token");
-
     try {
-      await auth.login(username, password);
-      navigate("/home");
+      const value = await auth.login(username, password);
+      if (value) {
+        navigate("/home");
+        return;
+      }
     } catch (error) {
       console.log(error);
     }
+    setMessage("This user does not exist");
+    setUsername("");
+    setPassword("");
+  }
+
+  function handleClose() {
+    setOpen(false);
   }
 
   return (
@@ -71,6 +79,8 @@ export default function SignIn() {
               name="username"
               autoComplete="username"
               autoFocus
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
             />
             <TextField
               margin="normal"
@@ -81,6 +91,8 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
             />
             <Button
               type="submit"
@@ -106,6 +118,30 @@ export default function SignIn() {
                 </Typography>
               </Grid>
             </Grid>
+            {message !== null ? (
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title-sign-in">
+                  {"Sign In"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description-sign-in">
+                    {message}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} autoFocus>
+                    Close
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            ) : (
+              <></>
+            )}
           </Box>
         </Box>
       </Container>

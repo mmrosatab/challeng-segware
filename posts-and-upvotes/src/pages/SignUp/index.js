@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Link as LinkRouter } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,18 +8,53 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { emptyOrOnlySpaces } from "../utils";
+import { signUpRequest } from "../../RequestProvider";
 
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const [message, setMessage] = useState(null);
+  const [open, setOpen] = useState(true);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function handleSubmit(event) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-    });
-  };
+
+    if (emptyOrOnlySpaces(username, password)) return;
+
+    try {
+      const data = await signUpRequest(username, password);
+
+      if (data) {
+        const msg = createUserMessage(data);
+        setMessage(msg);
+        setOpen(true);
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    setOpen(true);
+    setMessage("This user already exists");
+    setUsername("");
+    setPassword("");
+  }
+
+  function createUserMessage(data) {
+    return `User was created! Username: ${data.username} Password: ${data.password}`;
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -51,6 +86,8 @@ export default function SignUp() {
                   label="Username"
                   name="username"
                   autoComplete="username"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -62,6 +99,8 @@ export default function SignUp() {
                   type="password"
                   id="password-sign-up"
                   autoComplete="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
                 />
               </Grid>
             </Grid>
@@ -82,6 +121,30 @@ export default function SignUp() {
                 </Typography>
               </Grid>
             </Grid>
+            {message !== null ? (
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title-sign-up">
+                  {"Sign In"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description-sign-up">
+                    {message}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} autoFocus>
+                    Close
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            ) : (
+              <></>
+            )}
           </Box>
         </Box>
       </Container>

@@ -14,21 +14,18 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { forgotPasswordRequest } from "../../RequestProvider";
+import { usernameIsEmpty } from "../utils";
 
 const theme = createTheme();
 
 export default function ForgotPassword() {
+  const [username, setUsername] = useState("");
   const [message, setMessage] = useState(null);
   const [open, setOpen] = useState(true);
 
-  function usernameIsEmpty(username) {
-    return username.length === 0;
-  }
-
   async function handleSubmit(event) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const username = formData.get("username");
+
     if (usernameIsEmpty(username)) return;
 
     try {
@@ -39,6 +36,7 @@ export default function ForgotPassword() {
     } catch (error) {
       console.log(error);
     }
+    setUsername("");
   }
 
   function createUserMessage(data) {
@@ -46,9 +44,10 @@ export default function ForgotPassword() {
       ? "This user does not exist"
       : `Password: ${data.password}`;
   }
-  const handleClose = () => {
+
+  function handleClose() {
     setOpen(false);
-  };
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -80,6 +79,8 @@ export default function ForgotPassword() {
                   label="Username"
                   name="username"
                   autoComplete="username"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
                 />
               </Grid>
             </Grid>
