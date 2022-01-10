@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link as LinkRouter } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -28,14 +30,10 @@ export default function ForgotPassword() {
 
     if (usernameIsEmpty(username)) return;
 
-    try {
-      const data = await forgotPasswordRequest(username);
-      const msg = createUserMessage(data);
-      setMessage(msg);
-      setOpen(true);
-    } catch (error) {
-      console.log(error);
-    }
+    const data = await forgotPasswordRequest(username);
+    const msg = createUserMessage(data);
+    setMessage(msg);
+    setOpen(true);
     setUsername("");
   }
 
@@ -61,6 +59,9 @@ export default function ForgotPassword() {
             alignItems: "center",
           }}
         >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
           <Typography component="h1" variant="h5">
             Entre your username
           </Typography>

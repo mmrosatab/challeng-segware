@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link as LinkRouter } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -29,27 +31,18 @@ export default function SignUp() {
 
     if (emptyOrOnlySpaces(username, password)) return;
 
-    try {
-      const data = await signUpRequest(username, password);
+    const data = await signUpRequest(username, password);
 
-      if (data) {
-        const msg = createUserMessage(data);
-        setMessage(msg);
-        setOpen(true);
-        return;
-      }
-    } catch (error) {
-      console.log(error);
+    if (data !== null && data.length === 0) {
+      setMessage(`User was created!`);
+      setOpen(true);
+      return true;
     }
 
     setOpen(true);
     setMessage("This user already exists");
     setUsername("");
     setPassword("");
-  }
-
-  function createUserMessage(data) {
-    return `User was created! Username: ${data.username} Password: ${data.password}`;
   }
 
   function handleClose() {
@@ -68,6 +61,9 @@ export default function SignUp() {
             alignItems: "center",
           }}
         >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
@@ -129,7 +125,7 @@ export default function SignUp() {
                 aria-describedby="alert-dialog-description"
               >
                 <DialogTitle id="alert-dialog-title-sign-up">
-                  {"Sign In"}
+                  {"Sign Up"}
                 </DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description-sign-up">

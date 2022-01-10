@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link as LinkRouter, useNavigate } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -31,14 +33,10 @@ export default function SignIn() {
 
     if (emptyOrOnlySpaces(username, password)) return;
 
-    try {
-      const value = await auth.login(username, password);
-      if (value) {
-        navigate("/home");
-        return;
-      }
-    } catch (error) {
-      console.log(error);
+    const value = await auth.login(username, password);
+    if (value) {
+      navigate("/home");
+      return;
     }
     setMessage("This user does not exist");
     setUsername("");
@@ -61,6 +59,9 @@ export default function SignIn() {
             alignItems: "center",
           }}
         >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
@@ -68,7 +69,7 @@ export default function SignIn() {
             component="form"
             onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}
+            sx={{ mt: 3 }}
           >
             <TextField
               margin="normal"

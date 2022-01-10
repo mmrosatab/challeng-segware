@@ -1,4 +1,7 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -7,20 +10,23 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useAuth } from "../../context/AuthContext";
-
+import { feedsRequest } from "../../RequestProvider";
 const theme = createTheme();
 
 export default function Home() {
   const auth = useAuth();
   const navigate = useNavigate();
 
+  useEffect(() => {}, []);
+
+  async function getPost() {
+    const data = await feedsRequest();
+    console.log(data);
+  }
+
   function handleClickLogout() {
-    try {
-      auth.logout();
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
+    auth.logout();
+    navigate("/");
   }
 
   return (
@@ -35,6 +41,9 @@ export default function Home() {
             alignItems: "center",
           }}
         >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
           <Typography component="h1" variant="h5">
             Posts
           </Typography>
@@ -71,6 +80,14 @@ export default function Home() {
               alignItems: "center",
             }}
           >
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={getPost}
+            >
+              get
+            </Button>
             <Button
               type="submit"
               variant="contained"
