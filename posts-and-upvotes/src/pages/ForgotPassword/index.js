@@ -18,7 +18,7 @@ import { forgotPasswordRequest } from "../../RequestProvider";
 const theme = createTheme();
 
 export default function ForgotPassword() {
-  const [dataUser, setDataUser] = useState(null);
+  const [message, setMessage] = useState(null);
   const [open, setOpen] = useState(true);
 
   function usernameIsEmpty(username) {
@@ -33,13 +33,19 @@ export default function ForgotPassword() {
 
     try {
       const data = await forgotPasswordRequest(username);
-      setDataUser(data);
+      const msg = createUserMessage(data);
+      setMessage(msg);
       setOpen(true);
     } catch (error) {
       console.log(error);
     }
   }
 
+  function createUserMessage(data) {
+    return data.length === 0
+      ? "This user does not exist"
+      : `Password: ${data.password}`;
+  }
   const handleClose = () => {
     setOpen(false);
   };
@@ -88,11 +94,11 @@ export default function ForgotPassword() {
             <Grid container justifyContent="center">
               <Grid item>
                 <Typography variant="body2">
-                  <LinkRouter to="/">Back</LinkRouter>
+                  <LinkRouter to="/">Sign In</LinkRouter>
                 </Typography>
               </Grid>
             </Grid>
-            {dataUser !== null ? (
+            {message !== null ? (
               <Dialog
                 open={open}
                 onClose={handleClose}
@@ -104,10 +110,7 @@ export default function ForgotPassword() {
                 </DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
-                    {`Username: ${dataUser.username}`}
-                  </DialogContentText>
-                  <DialogContentText>
-                    {`Password: ${dataUser.password}`}
+                    {message}
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
