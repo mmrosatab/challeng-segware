@@ -3,8 +3,8 @@ import { getTokenLocalStorage } from "./context/LocalStoreProvider";
 const URL_SIGN_IN = "https://segware-book-api.segware.io/api/sign-in";
 const URL_SIGN_UP = "https://segware-book-api.segware.io/api/sign-up";
 const URL_FEEDS = "https://segware-book-api.segware.io/api/feeds";
-// const URL_FEED = "https://segware-book-api.segware.io/api/feed";
-// const URL_REACTION = "https://segware-book-api.segware.io/api/reaction";
+const URL_FEED = "https://segware-book-api.segware.io/api/feed";
+const URL_REACTION = "https://segware-book-api.segware.io/api/reaction";
 
 export async function signInRequest(username, password) {
   try {
@@ -38,8 +38,41 @@ export async function forgotPasswordRequest(username) {
 export async function feedsRequest() {
   try {
     const token = getTokenLocalStorage();
-
     const request = await axios.get(URL_FEEDS, {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return request.data;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function reactionRequest(feedId, like, love) {
+  try {
+    const token = getTokenLocalStorage();
+    const request = await axios.post(URL_REACTION, {
+      feedId,
+      like,
+      love,
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return request.data;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function feedRequest(content) {
+  try {
+    const token = getTokenLocalStorage();
+    const request = await axios.post(URL_FEED, {
+      content,
       headers: {
         Authorization: token,
       },

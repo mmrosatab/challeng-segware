@@ -1,0 +1,38 @@
+import { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
+import Avatar from "@mui/material/Avatar";
+import { red } from "@mui/material/colors";
+
+export default function InputCard({ username, handleClickPost }) {
+  const [content, setContent] = useState("");
+
+  return (
+    <Card sx={{ maxWidth: 400 }}>
+      <CardHeader
+        avatar={
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            {username.charAt(0)}
+          </Avatar>
+        }
+        title={username}
+      />
+      <CardContent>
+        <TextField
+          placeholder="Type something..."
+          margin="normal"
+          required
+          fullWidth
+          autoComplete="username"
+          autoFocus
+          rows={1}
+          value={content}
+          onChange={(event) => setContent(event.target.value)}
+          onFocus={() => console.log("pressionando")}
+        />
+      </CardContent>
+    </Card>
+  );
+}

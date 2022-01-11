@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,15 +10,17 @@ import { useAuth } from "../../context/AuthContext";
 import { feedsRequest } from "../../RequestProvider";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
+// import { blue } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
+import Post from "../../components/Post";
+import CircularProgress from "@mui/material/CircularProgress";
+// import InputCard from "../../components/InputCard";
+import { getUsernameLocalStorage } from "../../context/LocalStoreProvider";
+import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
-import { red } from "@mui/material/colors";
-import { blue } from "@mui/material/colors";
 import Avatar from "@mui/material/Avatar";
-import Post from "../../components/Post";
-import CircularProgress from "@mui/material/CircularProgress";
-import { getUsernameLocalStorage } from "../../context/LocalStoreProvider";
 
 const theme = createTheme({
   palette: {
@@ -34,6 +35,8 @@ export default function Home() {
   const auth = useAuth();
   const navigate = useNavigate();
   const [posts, setPosts] = useState(null);
+  const [content, setContent] = useState("");
+
   const firstUpdate = useRef(true);
 
   useEffect(() => {
@@ -53,8 +56,8 @@ export default function Home() {
     setPosts(data);
   }
 
-  function handleClickGet() {
-    console.log(posts);
+  function handleClickPost(content) {
+    console.log(content);
   }
   function addLike() {
     console.log("Add like");
@@ -99,13 +102,18 @@ export default function Home() {
             <CardContent>
               <TextField
                 placeholder="Type something..."
-                multiline
+                margin="normal"
+                required
                 fullWidth
+                autoComplete="username"
+                autoFocus
                 rows={1}
+                // value={content}
+                // onChange={(event) => setContent(event.target.value)}
+                onFocus={() => console.log("pressionando")}
               />
             </CardContent>
           </Card>
-
           {posts ? (
             posts.map((post) => {
               return (
