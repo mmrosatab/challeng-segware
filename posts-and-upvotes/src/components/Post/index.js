@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
@@ -13,11 +14,12 @@ import Avatar from "@mui/material/Avatar";
 
 const inicialState = { id: "180", username: "carina" };
 
-export default function Post() {
+export default function Post({ addLike, addLove }) {
   const [author, setAuthor] = useState(inicialState);
   const [createdAt, setCreatedAt] = useState("");
   const [updatedAt, setUpdatedAt] = useState("");
   const [likes, setLikes] = useState(0);
+  const [loves, setLoves] = useState(0);
   const [content, setContent] = useState("");
   const [id, setId] = useState("");
 
@@ -25,29 +27,39 @@ export default function Post() {
   function handleLove() {}
 
   return (
-    <Card sx={{ maxWidth: 400 }}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            {author.username.charAt(0)}
-          </Avatar>
-        }
-        title={author.username}
-        subheader={createdAt}
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {content}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ThumbUpIcon />
-        </IconButton>
-      </CardActions>
-    </Card>
+    <Box
+      sx={{
+        width: 800,
+        maxWidth: "100%",
+        mt: 3,
+      }}
+    >
+      <Card sx={{ maxWidth: 400 }}>
+        <CardHeader
+          avatar={
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+              {author.username.charAt(0)}
+            </Avatar>
+          }
+          title={author.username}
+          subheader={createdAt}
+        />
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {content}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <IconButton onClick={addLove} aria-label="love">
+            <FavoriteIcon />
+          </IconButton>
+          <IconButton>{loves}</IconButton>
+          <IconButton onClick={addLike} aria-label="like">
+            <ThumbUpIcon />
+          </IconButton>
+          <IconButton>{likes}</IconButton>
+        </CardActions>
+      </Card>
+    </Box>
   );
 }
