@@ -12,16 +12,14 @@ import { red } from "@mui/material/colors";
 import { blue } from "@mui/material/colors";
 import Avatar from "@mui/material/Avatar";
 
-const inicialState = { id: "180", username: "carina" };
-
-export default function Post({ addLike, addLove }) {
-  const [author, setAuthor] = useState(inicialState);
-  const [createdAt, setCreatedAt] = useState("");
-  const [updatedAt, setUpdatedAt] = useState("");
-  const [likes, setLikes] = useState(0);
-  const [loves, setLoves] = useState(0);
-  const [content, setContent] = useState("");
-  const [id, setId] = useState("");
+export default function Post({ post, addLike, addLove }) {
+  const [author, setAuthor] = useState(post.author);
+  const [createdAt, setCreatedAt] = useState(post.createdAt);
+  const [updatedAt, setUpdatedAt] = useState(post.updatedAt);
+  const [likes, setLikes] = useState(post.likes);
+  const [loves, setLoves] = useState(post.loves);
+  const [content, setContent] = useState(post.content);
+  const [id, setId] = useState(post.id);
 
   function handleLike() {}
   function handleLove() {}

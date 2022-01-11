@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -36,14 +36,13 @@ const inicialState = { id: "180", username: "carina" };
 export default function Home() {
   const auth = useAuth();
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const [author, setAuthor] = useState(inicialState);
   const firstUpdate = useRef(true);
 
   useEffect(() => {
     if (firstUpdate.current) {
-      const data = feedsRequest();
-      setPosts(data);
+      getFeeds();
       firstUpdate.current = false;
     }
   }, []);
@@ -53,6 +52,14 @@ export default function Home() {
     navigate("/");
   }
 
+  async function getFeeds() {
+    const data = await feedsRequest();
+    setPosts(data);
+  }
+
+  function handleClickGet() {
+    console.log(posts);
+  }
   function addLike() {
     console.log("Add like");
   }
@@ -68,7 +75,6 @@ export default function Home() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Posts
             </Typography>
-
             <Button color="inherit" type="submit" onClick={handleClickLogout}>
               Logout
             </Button>
@@ -93,7 +99,6 @@ export default function Home() {
                 </Avatar>
               }
               title={author.username}
-              subheader={"createdAt"}
             />
             <CardContent>
               <TextField
@@ -105,7 +110,20 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Post addLike={addLike} addLove={addLove} />
+          {posts ? (
+            posts.map((post) => {
+              return (
+                <Post
+                  key={post.id}
+                  addLike={addLike}
+                  addLove={addLove}
+                  post={post}
+                ></Post>
+              );
+            })
+          ) : (
+            <React.Fragment />
+          )}
         </Box>
       </Container>
     </ThemeProvider>
