@@ -1,7 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -11,18 +9,31 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useAuth } from "../../context/AuthContext";
 import { feedsRequest } from "../../RequestProvider";
-const theme = createTheme();
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Post from "../../components/Post";
+
+const theme = createTheme({
+  palette: {
+    background: {
+      default: "#e4f0e2",
+    },
+  },
+});
 
 export default function Home() {
   const auth = useAuth();
   const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
+  const firstUpdate = useRef(true);
 
-  useEffect(() => {}, []);
-
-  async function getPost() {
-    const data = await feedsRequest();
-    console.log(data);
-  }
+  useEffect(() => {
+    if (firstUpdate.current) {
+      const data = feedsRequest();
+      setPosts(data);
+      firstUpdate.current = false;
+    }
+  }, []);
 
   function handleClickLogout() {
     auth.logout();
@@ -31,6 +42,19 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Posts
+            </Typography>
+
+            <Button color="inherit" type="submit" onClick={handleClickLogout}>
+              Logout
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </Box>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -41,12 +65,6 @@ export default function Home() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Posts
-          </Typography>
           <Box
             sx={{
               width: 800,
@@ -64,38 +82,12 @@ export default function Home() {
 
           <Box
             sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              width: 800,
+              maxWidth: "100%",
+              mt: 3,
             }}
           >
-            tttt
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={getPost}
-            >
-              get
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleClickLogout}
-            >
-              Logout
-            </Button>
+            <Post />
           </Box>
         </Box>
       </Container>

@@ -2,8 +2,8 @@ import axios from "axios";
 import { getTokenLocalStorage } from "./context/LocalStoreProvider";
 const URL_SIGN_IN = "https://segware-book-api.segware.io/api/sign-in";
 const URL_SIGN_UP = "https://segware-book-api.segware.io/api/sign-up";
-// const URL_FEED = "https://segware-book-api.segware.io/api/feed";
 const URL_FEEDS = "https://segware-book-api.segware.io/api/feeds";
+// const URL_FEED = "https://segware-book-api.segware.io/api/feed";
 // const URL_REACTION = "https://segware-book-api.segware.io/api/reaction";
 
 export async function signInRequest(username, password) {
@@ -45,8 +45,6 @@ export async function feedsRequest() {
       },
     });
 
-    console.log(request);
-    console.log(request.data);
     return request.data;
   } catch (error) {
     return null;

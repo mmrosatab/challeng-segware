@@ -11,3 +11,15 @@ export function getTokenLocalStorage() {
 }
 
 export const userIsAuthenticated = getTokenLocalStorage() !== null;
+
+export function setUsernameLocalStorage(username) {
+  localStorage.setItem("username", username);
+}
+
+export function removeUsernameLocalStorage() {
+  localStorage.removeItem("username");
+}
+
+export function getUsernameLocalStorage() {
+  return localStorage.getItem("username");
+}
