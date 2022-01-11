@@ -14,14 +14,12 @@ import Toolbar from "@mui/material/Toolbar";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import IconButton from "@mui/material/IconButton";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { red } from "@mui/material/colors";
 import { blue } from "@mui/material/colors";
 import Avatar from "@mui/material/Avatar";
 import Post from "../../components/Post";
+import CircularProgress from "@mui/material/CircularProgress";
+import { getUsernameLocalStorage } from "../../context/LocalStoreProvider";
 
 const theme = createTheme({
   palette: {
@@ -31,13 +29,11 @@ const theme = createTheme({
   },
 });
 
-const inicialState = { id: "180", username: "carina" };
-
 export default function Home() {
+  const username = getUsernameLocalStorage();
   const auth = useAuth();
   const navigate = useNavigate();
   const [posts, setPosts] = useState(null);
-  const [author, setAuthor] = useState(inicialState);
   const firstUpdate = useRef(true);
 
   useEffect(() => {
@@ -95,10 +91,10 @@ export default function Home() {
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  {author.username.charAt(0)}
+                  {username.charAt(0)}
                 </Avatar>
               }
-              title={author.username}
+              title={username}
             />
             <CardContent>
               <TextField
@@ -122,7 +118,17 @@ export default function Home() {
               );
             })
           ) : (
-            <React.Fragment />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                p: 1,
+                m: 1,
+              }}
+            >
+              <CircularProgress />
+            </Box>
           )}
         </Box>
       </Container>

@@ -3,6 +3,8 @@ import {
   getTokenLocalStorage,
   removeTokenLocalStorage,
   setTokenLocalStorage,
+  setUsernameLocalStorage,
+  removeUsernameLocalStorage,
 } from "../LocalStoreProvider";
 
 import { signInRequest } from "../../RequestProvider";
@@ -26,6 +28,7 @@ export function AuthProvider({ children }) {
       if (actualToken) {
         setToken(actualToken);
         setTokenLocalStorage(actualToken);
+        setUsernameLocalStorage(username);
       }
     } catch (error) {
       return error;
@@ -35,6 +38,7 @@ export function AuthProvider({ children }) {
   function logout() {
     setToken(null);
     removeTokenLocalStorage();
+    removeUsernameLocalStorage();
   }
 
   return (
