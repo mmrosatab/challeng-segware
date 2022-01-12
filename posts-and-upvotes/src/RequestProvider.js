@@ -50,13 +50,11 @@ export async function feedsRequest() {
   }
 }
 
-export async function reactionRequest(feedId, like, love) {
+export async function feedRequest(content) {
   try {
     const token = getTokenLocalStorage();
-    const request = await axios.post(URL_REACTION, {
-      feedId,
-      like,
-      love,
+    const message = { content };
+    const request = await axios.post(URL_FEED, message, {
       headers: {
         Authorization: token,
       },
@@ -68,11 +66,28 @@ export async function reactionRequest(feedId, like, love) {
   }
 }
 
-export async function feedRequest(content) {
+export async function likeRequest(feedId, like) {
   try {
     const token = getTokenLocalStorage();
-    const request = await axios.post(URL_FEED, {
-      content,
+    const message = { feedId, like };
+
+    const request = await axios.post(URL_REACTION, message, {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return request.data;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function loveRequest(feedId, love) {
+  try {
+    const token = getTokenLocalStorage();
+    const message = { feedId, love };
+    const request = await axios.post(URL_REACTION, message, {
       headers: {
         Authorization: token,
       },

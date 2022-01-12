@@ -14,7 +14,7 @@ import Post from "../../components/Post";
 import CircularProgress from "@mui/material/CircularProgress";
 import InputCard from "../../components/InputCard";
 import { getUsernameLocalStorage } from "../../context/LocalStoreProvider";
-import { reactionRequest, feedRequest } from "../../RequestProvider";
+import { likeRequest, loveRequest, feedRequest } from "../../RequestProvider";
 
 const theme = createTheme({
   palette: {
@@ -50,12 +50,12 @@ export default function Home() {
   }
 
   async function addLike(id) {
-    const data = await reactionRequest(id, true, false);
+    const data = await likeRequest(id, true);
     console.log(data);
   }
 
   async function addLove(id) {
-    const data = await reactionRequest(id, false, true);
+    const data = await loveRequest(id, true);
     console.log(data);
   }
 
