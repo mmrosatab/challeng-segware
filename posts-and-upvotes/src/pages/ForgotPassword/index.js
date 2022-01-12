@@ -16,7 +16,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { forgotPasswordRequest } from "../../RequestProvider";
-import { usernameIsEmpty } from "../utils";
+import { isEmpty } from "../utils";
 
 const theme = createTheme();
 
@@ -28,7 +28,7 @@ export default function ForgotPassword() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    if (usernameIsEmpty(username)) return;
+    if (isEmpty(username)) return;
 
     const data = await forgotPasswordRequest(username);
     const msg = createUserMessage(data);

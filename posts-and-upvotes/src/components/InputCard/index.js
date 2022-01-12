@@ -12,6 +12,11 @@ import { red } from "@mui/material/colors";
 export default function InputCard({ username, handleClickPost }) {
   const [content, setContent] = useState("");
 
+  function handleClick() {
+    handleClickPost(content);
+    setContent("");
+  }
+
   return (
     <Card sx={{ maxWidth: 400 }}>
       <CardHeader
@@ -36,7 +41,7 @@ export default function InputCard({ username, handleClickPost }) {
         />
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton onClick={() => handleClickPost(content)} aria-label="like">
+        <IconButton onClick={handleClick} aria-label="like">
           <ThumbUpIcon />
         </IconButton>
       </CardActions>

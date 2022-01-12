@@ -15,6 +15,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import InputCard from "../../components/InputCard";
 import { getUsernameLocalStorage } from "../../context/LocalStoreProvider";
 import { likeRequest, loveRequest, feedRequest } from "../../RequestProvider";
+import { isEmpty } from "../../pages/utils";
 
 const theme = createTheme({
   palette: {
@@ -45,6 +46,8 @@ export default function Home() {
   }
 
   async function handleClickPost(content) {
+    if (isEmpty(content)) return;
+
     const status = await feedRequest(content);
     if (status === 201) {
       getFeeds();

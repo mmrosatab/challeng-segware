@@ -30,4 +30,4 @@ You can use this application here: https://challenge-posts-and-upvotes.vercel.ap
 - [x] - Load feeds
 - [x] - Make new post
 - [x] - Add like and love reactions
-- [x] - Add Not found page for unknown routers
+- [x] - Add Not Found Page for unknown routers
