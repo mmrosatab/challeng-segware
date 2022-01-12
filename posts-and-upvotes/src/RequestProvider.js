@@ -60,7 +60,7 @@ export async function feedRequest(content) {
       },
     });
 
-    return request.data;
+    return request.status;
   } catch (error) {
     return null;
   }
@@ -77,7 +77,7 @@ export async function likeRequest(feedId, like) {
       },
     });
 
-    return request.data;
+    return request.status;
   } catch (error) {
     return null;
   }
@@ -93,7 +93,7 @@ export async function loveRequest(feedId, love) {
       },
     });
 
-    return request.data;
+    return request.status;
   } catch (error) {
     return null;
   }
