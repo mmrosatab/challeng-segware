@@ -45,19 +45,16 @@ export default function Home() {
   }
 
   async function handleClickPost(content) {
-    console.log(`Content: ${content}`);
     const data = await feedRequest(content);
     console.log(data);
   }
 
   async function addLike(id) {
-    console.log(`Add like: ${id}`);
     const data = await reactionRequest(id, true, false);
     console.log(data);
   }
 
   async function addLove(id) {
-    console.log(`Add love: ${id}`);
     const data = await reactionRequest(id, false, true);
     console.log(data);
   }

@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { red } from "@mui/material/colors";
-// import { blue } from "@mui/material/colors";
 import Avatar from "@mui/material/Avatar";
+import { dateFormatter } from "../../pages/utils";
 
 export default function Post({ post, addLike, addLove }) {
   return (
@@ -28,7 +28,7 @@ export default function Post({ post, addLike, addLove }) {
             </Avatar>
           }
           title={post.author.username}
-          subheader={post.createdAt}
+          subheader={dateFormatter(post.createdAt)}
         />
         <CardContent>
           <Typography variant="body2" color="text.secondary">

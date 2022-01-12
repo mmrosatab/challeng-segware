@@ -1,4 +1,4 @@
-import { Link as LinkRouter, useNavigate } from "react-router-dom";
+import { Link as LinkRouter } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
