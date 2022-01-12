@@ -3,6 +3,9 @@ import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import IconButton from "@mui/material/IconButton";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import Avatar from "@mui/material/Avatar";
 import { red } from "@mui/material/colors";
 
@@ -30,9 +33,13 @@ export default function InputCard({ username, handleClickPost }) {
           rows={1}
           value={content}
           onChange={(event) => setContent(event.target.value)}
-          onFocus={() => console.log("pressionando")}
         />
       </CardContent>
+      <CardActions disableSpacing>
+        <IconButton onClick={() => handleClickPost(content)} aria-label="like">
+          <ThumbUpIcon />
+        </IconButton>
+      </CardActions>
     </Card>
   );
 }

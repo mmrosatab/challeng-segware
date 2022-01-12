@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -10,17 +10,11 @@ import { useAuth } from "../../context/AuthContext";
 import { feedsRequest } from "../../RequestProvider";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-// import { blue } from "@mui/material/colors";
-import { red } from "@mui/material/colors";
 import Post from "../../components/Post";
 import CircularProgress from "@mui/material/CircularProgress";
-// import InputCard from "../../components/InputCard";
+import InputCard from "../../components/InputCard";
 import { getUsernameLocalStorage } from "../../context/LocalStoreProvider";
-import TextField from "@mui/material/TextField";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
-import Avatar from "@mui/material/Avatar";
+import { reactionRequest, feedRequest } from "../../RequestProvider";
 
 const theme = createTheme({
   palette: {
@@ -35,15 +29,9 @@ export default function Home() {
   const auth = useAuth();
   const navigate = useNavigate();
   const [posts, setPosts] = useState(null);
-  const [content, setContent] = useState("");
-
-  const firstUpdate = useRef(true);
 
   useEffect(() => {
-    if (firstUpdate.current) {
-      getFeeds();
-      firstUpdate.current = false;
-    }
+    getFeeds();
   }, []);
 
   function handleClickLogout() {
@@ -56,14 +44,22 @@ export default function Home() {
     setPosts(data);
   }
 
-  function handleClickPost(content) {
-    console.log(content);
+  async function handleClickPost(content) {
+    console.log(`Content: ${content}`);
+    const data = await feedRequest(content);
+    console.log(data);
   }
-  function addLike() {
-    console.log("Add like");
+
+  async function addLike(id) {
+    console.log(`Add like: ${id}`);
+    const data = await reactionRequest(id, true, false);
+    console.log(data);
   }
-  function addLove() {
-    console.log("Add love");
+
+  async function addLove(id) {
+    console.log(`Add love: ${id}`);
+    const data = await reactionRequest(id, false, true);
+    console.log(data);
   }
 
   return (
@@ -90,30 +86,8 @@ export default function Home() {
             mt: 10,
           }}
         >
-          <Card sx={{ maxWidth: 400 }}>
-            <CardHeader
-              avatar={
-                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  {username.charAt(0)}
-                </Avatar>
-              }
-              title={username}
-            />
-            <CardContent>
-              <TextField
-                placeholder="Type something..."
-                margin="normal"
-                required
-                fullWidth
-                autoComplete="username"
-                autoFocus
-                rows={1}
-                // value={content}
-                // onChange={(event) => setContent(event.target.value)}
-                onFocus={() => console.log("pressionando")}
-              />
-            </CardContent>
-          </Card>
+          <InputCard username={username} handleClickPost={handleClickPost} />
+
           {posts ? (
             posts.map((post) => {
               return (

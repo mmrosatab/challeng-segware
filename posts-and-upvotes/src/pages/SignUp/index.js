@@ -31,9 +31,9 @@ export default function SignUp() {
 
     if (emptyOrOnlySpaces(username, password)) return;
 
-    const data = await signUpRequest(username, password);
+    const status = await signUpRequest(username, password);
 
-    if (data !== null && data.length === 0) {
+    if (status === 200) {
       setMessage(`User was created!`);
       setOpen(true);
       return true;
