@@ -23,15 +23,12 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function login(username, password) {
-    try {
-      const actualToken = await signInRequest(username, password);
-      if (actualToken) {
-        setToken(actualToken);
-        setTokenLocalStorage(actualToken);
-        setUsernameLocalStorage(username);
-      }
-    } catch (error) {
-      return error;
+    const actualToken = await signInRequest(username, password);
+    if (actualToken) {
+      setToken(actualToken);
+      setTokenLocalStorage(actualToken);
+      setUsernameLocalStorage(username);
+      return true;
     }
   }
 

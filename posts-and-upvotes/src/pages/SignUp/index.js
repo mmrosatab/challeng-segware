@@ -22,7 +22,7 @@ const theme = createTheme();
 
 export default function SignUp() {
   const [message, setMessage] = useState(null);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -39,8 +39,8 @@ export default function SignUp() {
       return true;
     }
 
-    setOpen(true);
     setMessage("This user already exists");
+    setOpen(true);
     setUsername("");
     setPassword("");
   }

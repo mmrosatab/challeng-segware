@@ -23,7 +23,7 @@ const theme = createTheme();
 export default function ForgotPassword() {
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState(null);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   async function handleSubmit(event) {
     event.preventDefault();

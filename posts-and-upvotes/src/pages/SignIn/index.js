@@ -24,23 +24,30 @@ export default function SignIn() {
   const auth = useAuth();
   const navigate = useNavigate();
   const [message, setMessage] = useState(null);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    if (emptyOrOnlySpaces(username, password)) return;
+    if (emptyOrOnlySpaces(username, password)) {
+      setMessage("Username and password empty");
+      setUsername("");
+      setPassword("");
+      setOpen(true);
+      return;
+    }
 
     const value = await auth.login(username, password);
     if (value) {
       navigate("/home");
       return;
     }
-    setMessage("This user does not exist");
+    setMessage("Incorrect username or password");
     setUsername("");
     setPassword("");
+    setOpen(true);
   }
 
   function handleClose() {
