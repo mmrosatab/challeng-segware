@@ -96,6 +96,8 @@ export default function SignIn() {
               onChange={(event) => setPassword(event.target.value)}
             />
             <Button
+              data-testid="btn-submit-signin"
+              id="btn-submit-signin"
               type="submit"
               fullWidth
               variant="contained"
