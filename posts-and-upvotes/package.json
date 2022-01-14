@@ -47,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
     "jest": "^27.4.7"
   }
 }

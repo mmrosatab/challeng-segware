@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing Sign In component Should button is clicked 1`] = `ShallowWrapper {}`;
+
+exports[`Testing Sign In component Should render correctly 1`] = `ShallowWrapper {}`;
